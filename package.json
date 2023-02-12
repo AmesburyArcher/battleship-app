@@ -1,0 +1,28 @@
+{
+  "name": "battleship-app",
+  "version": "1.0.0",
+  "description": "battleship app",
+  "default": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmesburyArcher/battleship-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmesburyArcher/battleship-app/issues"
+  },
+  "homepage": "https://github.com/AmesburyArcher/battleship-app#readme",
+  "devDependencies": {
+    "parcel": "^2.8.3",
+    "prettier": "^2.8.4"
+  },
+  "dependencies": {
+    "core-js": "^3.27.2",
+    "regenerator-runtime": "^0.13.11"
+  }
+}
