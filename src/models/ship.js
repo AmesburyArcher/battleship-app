@@ -1,11 +1,28 @@
+import { IS_SUNK, IS_ALIVE } from '../config';
+
 class Ship {
-  _direction;
   _size;
   _hits;
+  _status;
+  _shipCoords;
 
-  constructor(size, direction) {
+  constructor(size, coords) {
     this._size = size;
-    this._direction = direction;
     this._hits = 0;
+    this._status = 'alive';
+    this._shipCoords = coords;
+  }
+
+  hit() {
+    this._hits++;
+    if (this.isSunk()) {
+      return IS_SUNK;
+    } else {
+      return IS_ALIVE;
+    }
+  }
+
+  isSunk() {
+    return this._size > this._hits;
   }
 }

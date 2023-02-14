@@ -6,16 +6,24 @@ class GameBoardView extends View {
 
   _generateMarkup() {
     let markup = '';
-    for (let i = 0; i < X_AXIS_SIZE; i++) {
-      let row = `<div class="game__board__row" data-row="${i}">`;
-      for (let j = 0; j < Y_AXIS_SIZE; j++) {
-        let gameCell = `
+    for (let x = 0; x < 2; x++) {
+      let gameBoard = `<div class="game__board" data-userType ="${
+        x === 0 ? 'user' : 'computer'
+      }">`;
+
+      for (let i = 0; i < X_AXIS_SIZE; i++) {
+        let row = `<div class="game__board__row" data-row="${i}">`;
+        for (let j = 0; j < Y_AXIS_SIZE; j++) {
+          let gameCell = `
             <div class="game__board__cell" data-col="${j}"></div>
         `;
-        row += gameCell;
+          row += gameCell;
+        }
+        row += `</div>`;
+        gameBoard += row;
       }
-      row += `</div>`;
-      markup += row;
+      gameBoard += '</div>';
+      markup += gameBoard;
     }
     return markup;
   }

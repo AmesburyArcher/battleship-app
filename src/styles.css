@@ -43,9 +43,13 @@ body {
 }
 
 .game__board__container {
-  width: 600px;
-  height: 600px;
+  display: flex;
+  gap: 2rem;
+
+  width: fit-content;
+  height: fit-content;
   border: 1px solid red;
+  padding: 1rem;
 }
 
 .game__board__row {
