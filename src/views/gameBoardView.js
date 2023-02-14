@@ -15,7 +15,7 @@ class GameBoardView extends View {
         let row = `<div class="game__board__row" data-row="${i}">`;
         for (let j = 0; j < Y_AXIS_SIZE; j++) {
           let gameCell = `
-            <div class="game__board__cell" data-col="${j}"></div>
+            <div class="game__board__cell" data-row="${i}" data-col="${j}"></div>
         `;
           row += gameCell;
         }

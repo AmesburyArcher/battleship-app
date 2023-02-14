@@ -1,16 +1,39 @@
-import { IS_SUNK, IS_ALIVE } from '../config';
+import { IS_SUNK, IS_ALIVE, X_AXIS_SIZE, Y_AXIS_SIZE } from '../config';
+import { randomInt } from '../helpers';
+import gameBoard from './gameBoard';
 
-class Ship {
+export default class Ship {
   _size;
   _hits;
-  _status;
-  _shipCoords;
 
-  constructor(size, coords) {
+  constructor(size) {
     this._size = size;
     this._hits = 0;
-    this._status = 'alive';
-    this._shipCoords = coords;
+    this.determinePos(size);
+  }
+
+  determinePos(size, random = true, coords = null, directionInput = null) {
+    let locationX;
+    let locationY;
+    let direction;
+    if (random) {
+      //Determine direction (0 = Horizontal, 1 = Vertical)
+      direction = randomInt(1);
+      if (!direction) {
+        locationX = randomInt(X_AXIS_SIZE - 2 - size);
+        locationY = randomInt(Y_AXIS_SIZE - 2);
+      } else {
+        locationX = randomInt(X_AXIS_SIZE - 2);
+        locationY = randomInt(Y_AXIS_SIZE - 2 - size);
+      }
+    } else {
+      direction = directionInput;
+      locationX = coords[0];
+      locationY = coords[1];
+    }
+    this.locationX = locationX;
+    this.locationY = locationY;
+    this.direction = direction;
   }
 
   hit() {
