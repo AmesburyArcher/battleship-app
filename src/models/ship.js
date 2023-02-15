@@ -22,11 +22,11 @@ export default class Ship {
         //Determine direction (0 = Horizontal, 1 = Vertical)
         direction = randomInt(1);
         if (!direction) {
-          locationX = randomInt(X_AXIS_SIZE - 2 - size);
-          locationY = randomInt(Y_AXIS_SIZE - 2);
+          locationX = randomInt(X_AXIS_SIZE - 1 - size);
+          locationY = randomInt(Y_AXIS_SIZE - 1);
         } else {
-          locationX = randomInt(X_AXIS_SIZE - 2);
-          locationY = randomInt(Y_AXIS_SIZE - 2 - size);
+          locationX = randomInt(X_AXIS_SIZE - 1);
+          locationY = randomInt(Y_AXIS_SIZE - 1 - size);
         }
       } else {
         direction = directionInput;
@@ -40,7 +40,40 @@ export default class Ship {
           (direction === 0 ? locationY : locationY + i) +
             String(direction === 0 ? locationX + i : locationX)
         );
-        if (map.has(coords)) {
+
+        // More collision checks to get better spacing on board
+        const coordsMinusOne = String(
+          (direction === 0 ? locationY : locationY + i) -
+            1 +
+            String((direction === 0 ? locationX + i : locationX) - 1)
+        );
+
+        const coordsPlusOne = String(
+          (direction === 0 ? locationY : locationY + i) +
+            1 +
+            String((direction === 0 ? locationX + i : locationX) + 1)
+        );
+
+        const coordsPlusMinusOne = String(
+          (direction === 0 ? locationY : locationY + i) +
+            1 +
+            String((direction === 0 ? locationX + i : locationX) - 1)
+        );
+
+        const coordsMinusPlusOne = String(
+          (direction === 0 ? locationY : locationY + i) -
+            1 +
+            String((direction === 0 ? locationX + i : locationX) + 1)
+        );
+        // End of collision checks
+
+        if (
+          map.has(coords) ||
+          map.has(coordsMinusOne) ||
+          map.has(coordsPlusOne) ||
+          map.has(coordsPlusMinusOne) ||
+          map.has(coordsMinusPlusOne)
+        ) {
           unique = false;
           for (let i = 0; i < iterations; i++) {
             const coords = String(
