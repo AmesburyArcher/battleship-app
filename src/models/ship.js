@@ -35,17 +35,17 @@ export default class Ship {
       let unique = true;
       let iterations = 0;
       for (let i = 0; i < size; i++, iterations++) {
-        let coords = [
-          direction === 0 ? locationY : locationY + i,
-          direction === 0 ? locationX + i : locationX,
-        ];
+        let coords = String(
+          (direction === 0 ? locationY : locationY + i) +
+            String(direction === 0 ? locationX + i : locationX)
+        );
         if (map.has(coords)) {
           unique = false;
           for (let i = 0; i < iterations; i++) {
-            map.delete([
-              direction === 0 ? locationY : locationY + i,
-              direction === 0 ? locationX + i : locationX,
-            ]);
+            map.delete(
+              String(direction === 0 ? locationY : locationY + i) +
+                String(direction === 0 ? locationX + i : locationX)
+            );
           }
           break;
         } else {
