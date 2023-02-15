@@ -1,6 +1,7 @@
 import { IS_SUNK, IS_ALIVE, X_AXIS_SIZE, Y_AXIS_SIZE } from '../config';
 import { randomInt } from '../helpers';
 import gameBoard from './gameBoard';
+import { state } from './model';
 
 export default class Ship {
   _size;
@@ -35,21 +36,29 @@ export default class Ship {
       let unique = true;
       let iterations = 0;
       for (let i = 0; i < size; i++, iterations++) {
-        let coords = String(
+        const coords = String(
           (direction === 0 ? locationY : locationY + i) +
             String(direction === 0 ? locationX + i : locationX)
         );
         if (map.has(coords)) {
           unique = false;
           for (let i = 0; i < iterations; i++) {
-            map.delete(
-              String(direction === 0 ? locationY : locationY + i) +
+            const coords = String(
+              (direction === 0 ? locationY : locationY + i) +
                 String(direction === 0 ? locationX + i : locationX)
+            );
+            map.delete(coords);
+            state.boardState.computerBoardSlots.splice(
+              state.boardState.computerBoardSlots.indexOf(coords),
+              1
             );
           }
           break;
         } else {
           map.set(coords, true);
+          const tempArr = coords.split('');
+          //tempArr[0] = x tempArr[1] = y
+          state.boardState.computerBoardSlots.push(tempArr);
         }
       }
       if (unique) break;

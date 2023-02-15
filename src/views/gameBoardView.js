@@ -27,6 +27,19 @@ class GameBoardView extends View {
     }
     return markup;
   }
+
+  _handleShipPlacements() {
+    const board = this._parentElement.querySelector(
+      '[data-userType="computer"]'
+    );
+    console.log(board);
+
+    this._data.computerBoardSlots.forEach(coord => {
+      const [x, y] = coord;
+      const cell = board.querySelector(`[data-row="${x}"][data-col="${y}"]`);
+      cell.style.backgroundColor = 'pink';
+    });
+  }
 }
 
 export default new GameBoardView();

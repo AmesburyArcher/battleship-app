@@ -1,10 +1,9 @@
 import { X_AXIS_SIZE, Y_AXIS_SIZE } from '../config';
 import { randomInt } from '../helpers';
 import Ship from './ship';
+import { state } from './model';
 
 class GameBoard {
-  coveredFields = [];
-
   constructor() {
     const tempArr = [];
     for (let row = 0; row < X_AXIS_SIZE; row++) {
@@ -36,24 +35,30 @@ class GameBoard {
     const shipPlacements = new Map();
     //place carrier
     const carrier = new Ship(5, shipPlacements);
+    state.boardState.computerShips.push(carrier);
     this.popCells(carrier);
 
     //place 2 battleships
     for (let i = 0; i < 2; i++) {
       const battleship = new Ship(4, shipPlacements);
+      state.boardState.computerShips.push(battleship);
       this.popCells(battleship);
     }
     //place 3 destroyers
     for (let i = 0; i < 3; i++) {
       const destroyer = new Ship(3, shipPlacements);
+      state.boardState.computerShips.push(destroyer);
       this.popCells(destroyer);
     }
     //place 4 patrol ships
     for (let i = 0; i < 4; i++) {
       const patrol = new Ship(2, shipPlacements);
+      state.boardState.computerShips.push(patrol);
       this.popCells(patrol);
     }
     console.log(shipPlacements);
+    console.log(state.boardState.computerBoardSlots);
+    console.log(state.boardState.computerShips);
   }
 }
 
