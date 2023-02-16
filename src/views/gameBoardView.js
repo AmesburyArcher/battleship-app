@@ -40,6 +40,23 @@ class GameBoardView extends View {
       cell.style.backgroundColor = 'pink';
     });
   }
+
+  _handleAttacks(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      if (!e.target.closest('.game__board__cell')) return;
+      const xCoords = e.target.dataset.row;
+      const yCoords = e.target.dataset.col;
+
+      const status = handler(xCoords, yCoords);
+
+      if (!status) {
+        e.target.style.backgroundColor = 'green';
+      }
+      if (status) {
+        e.target.style.backgroundColor = 'red';
+      }
+    });
+  }
 }
 
 export default new GameBoardView();

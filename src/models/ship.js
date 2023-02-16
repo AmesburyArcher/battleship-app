@@ -104,6 +104,7 @@ export default class Ship {
   hit() {
     this._hits++;
     if (this.isSunk()) {
+      console.log('SUNK!');
       return IS_SUNK;
     } else {
       return IS_ALIVE;
@@ -111,6 +112,6 @@ export default class Ship {
   }
 
   isSunk() {
-    return this._size > this._hits;
+    return this._size <= this._hits;
   }
 }

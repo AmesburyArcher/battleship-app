@@ -7,8 +7,13 @@ const handleGameBoard = function () {
   gameBoardView._handleShipPlacements();
 };
 
+const handleAttack = function (x, y) {
+  return model.fireShot(x, y);
+};
+
 const init = function () {
   handleGameBoard();
+  gameBoardView._handleAttacks(handleAttack);
 };
 
 init();
