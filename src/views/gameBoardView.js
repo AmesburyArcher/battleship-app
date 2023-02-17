@@ -32,7 +32,6 @@ class GameBoardView extends View {
     const board = this._parentElement.querySelector(
       '[data-userType="computer"]'
     );
-    console.log(board);
 
     this._data.computerBoardSlots.forEach(coord => {
       const [x, y] = coord;
@@ -41,11 +40,17 @@ class GameBoardView extends View {
     });
   }
 
-  _handleAttacks(handler) {
+  _handleAttacks(handler, data) {
     this._parentElement.addEventListener('click', function (e) {
       if (!e.target.closest('.game__board__cell')) return;
+      if (e.target.parentNode.parentNode.dataset.usertype === 'user') return;
       const xCoords = e.target.dataset.row;
       const yCoords = e.target.dataset.col;
+
+      if (data.includes(xCoords + yCoords)) {
+        console.log('ALREADY HIT');
+        return;
+      }
 
       const status = handler(xCoords, yCoords);
 

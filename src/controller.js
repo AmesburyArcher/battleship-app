@@ -8,12 +8,20 @@ const handleGameBoard = function () {
 };
 
 const handleAttack = function (x, y) {
-  return model.fireShot(x, y);
+  // Fire shot at AI
+  const shotFired = model.fireShot(x, y);
+  // Check if all boats sunk
+  const gameOver = model.checkWin('computer');
+  if (gameOver) console.log('WINNER!');
+  return shotFired;
 };
 
 const init = function () {
   handleGameBoard();
-  gameBoardView._handleAttacks(handleAttack);
+  gameBoardView._handleAttacks(
+    handleAttack,
+    model.state.boardState.attackedCells
+  );
 };
 
 init();

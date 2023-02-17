@@ -16,7 +16,7 @@ class GameBoard {
       }
     }
     this.board = tempArr;
-    console.log(this.board);
+
     this._populateAIBoard();
   }
 
@@ -56,9 +56,6 @@ class GameBoard {
       state.boardState.computerShips.push(patrol);
       this.popCells(patrol);
     }
-    console.log(shipPlacements);
-    console.log(state.boardState.computerBoardSlots);
-    console.log(state.boardState.computerShips);
   }
 }
 

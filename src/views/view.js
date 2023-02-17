@@ -9,26 +9,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderSpinner() {
-    const markup = `
-          <div class="spinner">
-          </div> 
-    `;
-    this.clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
   clear() {
     this._parentElement.innerHTML = '';
-  }
-
-  renderError(message = this._errorMessage) {
-    const markup = `
-    <div class="error">
-      <p>${message}</p>
-    </div> 
-    `;
-    this.clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 }
