@@ -2,6 +2,7 @@ import { X_AXIS_SIZE, Y_AXIS_SIZE } from '../config';
 import { randomInt } from '../helpers';
 import Ship from './ship';
 import { state } from './model';
+import { clone, cloneDeep } from 'lodash';
 
 class GameBoard {
   constructor() {
@@ -15,7 +16,8 @@ class GameBoard {
         });
       }
     }
-    this.board = tempArr;
+    this.boardComputer = cloneDeep(tempArr);
+    this.boardUser = cloneDeep(tempArr);
 
     this._populateAIBoard();
   }
@@ -23,11 +25,11 @@ class GameBoard {
   popCells(ship) {
     if (ship.direction === 0) {
       for (let i = 0; i < ship._size; i++) {
-        this.board[ship.locationY][ship.locationX + i].occupied = ship;
+        this.boardComputer[ship.locationY][ship.locationX + i].occupied = ship;
       }
     } else {
       for (let i = 0; i < ship._size; i++) {
-        this.board[ship.locationY + i][ship.locationX].occupied = ship;
+        this.boardComputer[ship.locationY + i][ship.locationX].occupied = ship;
       }
     }
   }

@@ -1,6 +1,7 @@
 import gameBoard from './models/gameBoard';
 import * as model from './models/model';
 import gameBoardView from './views/gameBoardView';
+import pregameView from './views/pregameView';
 
 const handleGameBoard = function () {
   gameBoardView.render(model.state.boardState);
@@ -16,12 +17,20 @@ const handleAttack = function (x, y) {
   return shotFired;
 };
 
+const handleUserPregame = function () {
+  pregameView.render();
+};
+
+const handleUserShipPlacements = function () {};
+
 const init = function () {
   handleGameBoard();
-  gameBoardView._handleAttacks(
+  gameBoardView.handleAttacks(
     handleAttack,
     model.state.boardState.attackedCells
   );
+
+  pregameView.handlePlayGameButton(handleUserPregame);
 };
 
 init();

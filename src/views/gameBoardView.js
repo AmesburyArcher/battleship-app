@@ -40,7 +40,15 @@ class GameBoardView extends View {
     });
   }
 
-  _handleAttacks(handler, data) {
+  handleUserShipPlacements() {
+    const board = this._parentElement.querySelector('[data-userType="user"]');
+
+    const eventFunc = function (e) {};
+
+    board.addEventListener('click', eventFunc);
+  }
+
+  handleAttacks(handler, data) {
     this._parentElement.addEventListener('click', function (e) {
       if (!e.target.closest('.game__board__cell')) return;
       if (e.target.parentNode.parentNode.dataset.usertype === 'user') return;

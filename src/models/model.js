@@ -9,10 +9,19 @@ export const state = {
     playerBoardSlots: [],
     attackedCells: [],
   },
+  userState: {
+    shipsLeftToPlace: {
+      carrier: 1,
+      battleship: 2,
+      destroyer: 3,
+      patrol: 4,
+    },
+    axis: 'X',
+  },
 };
 
 export const fireShot = function (x, y) {
-  const target = gameBoard.board[x][y].occupied;
+  const target = gameBoard.boardComputer[x][y].occupied;
   state.boardState.attackedCells.push(String(x) + String(y));
 
   if (!target) {
@@ -33,4 +42,16 @@ export const checkWin = function (userType) {
   if (userType === 'computer') {
     return state.boardState.computerShips.every(ship => ship.isSunk());
   }
+};
+
+export const placeUserShip = function (x, y, size) {
+  const ship = new Ship(size);
+  ship.determinePos(
+    size,
+    _,
+    false,
+    [x, y],
+    state.userState.axis === 'X' ? 0 : 1
+  );
+  boardState.playerShips.push(ship);
 };

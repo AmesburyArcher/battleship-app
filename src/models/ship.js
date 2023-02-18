@@ -7,13 +7,19 @@ export default class Ship {
   _size;
   _hits;
 
-  constructor(size, map) {
+  constructor(size, map = null) {
     this._size = size;
     this._hits = 0;
     this.determinePos(size, map);
   }
 
-  determinePos(size, map, random = true, coords = null, directionInput = null) {
+  determinePos(
+    size,
+    map = null,
+    random = true,
+    coords = null,
+    directionInput = null
+  ) {
     let locationX;
     let locationY;
     let direction;
