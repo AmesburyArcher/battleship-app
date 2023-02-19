@@ -21,7 +21,17 @@ const handleUserPregame = function () {
   pregameView.render();
 };
 
-const handleUserShipPlacements = function () {};
+const handleUserShipPlacements = function (x, y) {
+  let size;
+  if (model.state.userState.currentPlacement === 'carrier') size = 5;
+  if (model.state.userState.currentPlacement === 'battleship') size = 4;
+  if (model.state.userState.currentPlacement === 'destroyer') size = 3;
+  if (model.state.userState.currentPlacement === 'patrol') size = 2;
+
+  model.placeUserShip(x, y, size);
+  console.log(model.state.boardState.playerShips);
+  console.log(model.state.boardState.playerBoardSlots);
+};
 
 const init = function () {
   handleGameBoard();
@@ -31,6 +41,10 @@ const init = function () {
   );
 
   pregameView.handlePlayGameButton(handleUserPregame);
+  gameBoardView.handleUserShipPlacements(
+    handleUserShipPlacements,
+    model.state.userState
+  );
 };
 
 init();

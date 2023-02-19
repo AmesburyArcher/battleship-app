@@ -3,6 +3,7 @@ import { X_AXIS_SIZE, Y_AXIS_SIZE } from '../config';
 
 class GameBoardView extends View {
   _parentElement = document.querySelector('.game__board__container');
+  _otherData;
 
   _generateMarkup() {
     let markup = '';
@@ -40,10 +41,61 @@ class GameBoardView extends View {
     });
   }
 
-  handleUserShipPlacements() {
+  handleUserShipPlacements(handler, data) {
     const board = this._parentElement.querySelector('[data-userType="user"]');
+    this._otherData = data;
+    const that = this;
 
-    const eventFunc = function (e) {};
+    const eventFunc = function (e) {
+      if (that._otherData.shipsLeftToPlace.total <= 0) return;
+      const cell = e.target;
+      if (that._otherData.axis === 'X') {
+        if (
+          that._otherData.currentPlacement === 'carrier' &&
+          cell.dataset.col >= 6
+        )
+          return;
+        if (
+          that._otherData.currentPlacement === 'battleship' &&
+          cell.dataset.col >= 7
+        )
+          return;
+        if (
+          that._otherData.currentPlacement === 'destroyer' &&
+          cell.dataset.col >= 8
+        )
+          return;
+        if (
+          that._otherData.currentPlacement === 'patrol' &&
+          cell.dataset.col >= 9
+        )
+          return;
+      }
+      if (that._otherData.axis === 'Y') {
+        if (
+          that._otherData.currentPlacement === 'carrier' &&
+          cell.dataset.row >= 6
+        )
+          return;
+        if (
+          that._otherData.currentPlacement === 'battleship' &&
+          cell.dataset.row >= 7
+        )
+          return;
+        if (
+          that._otherData.currentPlacement === 'destroyer' &&
+          cell.dataset.row >= 8
+        )
+          return;
+        if (
+          that._otherData.currentPlacement === 'patrol' &&
+          cell.dataset.row >= 9
+        )
+          return;
+      }
+      console.log('CLICKED');
+      handler(cell.dataset.row, cell.dataset.col);
+    };
 
     board.addEventListener('click', eventFunc);
   }

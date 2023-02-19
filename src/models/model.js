@@ -11,12 +11,14 @@ export const state = {
   },
   userState: {
     shipsLeftToPlace: {
+      total: 10,
       carrier: 1,
       battleship: 2,
       destroyer: 3,
       patrol: 4,
     },
     axis: 'X',
+    currentPlacement: 'carrier',
   },
 };
 
@@ -45,13 +47,9 @@ export const checkWin = function (userType) {
 };
 
 export const placeUserShip = function (x, y, size) {
-  const ship = new Ship(size);
-  ship.determinePos(
-    size,
-    _,
-    false,
-    [x, y],
-    state.userState.axis === 'X' ? 0 : 1
-  );
-  boardState.playerShips.push(ship);
+  let coords = [x, y];
+  let direction = state.userState.axis === 'X' ? 0 : 1;
+  const ship = new Ship(size, undefined, false, coords, direction);
+
+  state.boardState.playerShips.push(ship);
 };
