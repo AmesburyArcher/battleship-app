@@ -114,9 +114,10 @@ export default class Ship {
           (direction === 0 ? locationY : locationY + i) +
             String(direction === 0 ? locationX + i : locationX)
         );
-        const tempArr = coords.split('');
-        console.log(coords);
-        state.boardState.playerBoardSlots.push(tempArr);
+        // const tempArr = coords.split('');
+        // console.log(coords);
+
+        state.boardState.playerBoardSlots.push(coords);
       }
     }
     this.locationX = locationX;

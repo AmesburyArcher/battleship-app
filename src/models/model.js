@@ -49,6 +49,7 @@ export const checkWin = function (userType) {
 export const placeUserShip = function (x, y, size) {
   let coords = [x, y];
   let direction = state.userState.axis === 'X' ? 0 : 1;
+
   const ship = new Ship(size, undefined, false, coords, direction);
 
   state.boardState.playerShips.push(ship);

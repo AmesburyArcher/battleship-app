@@ -47,54 +47,52 @@ class GameBoardView extends View {
     const that = this;
 
     const eventFunc = function (e) {
-      if (that._otherData.shipsLeftToPlace.total <= 0) return;
+      if (that._otherData.userState.shipsLeftToPlace.total <= 0) return;
       const cell = e.target;
-      if (that._otherData.axis === 'X') {
-        if (
-          that._otherData.currentPlacement === 'carrier' &&
-          cell.dataset.col >= 6
-        )
-          return;
-        if (
-          that._otherData.currentPlacement === 'battleship' &&
-          cell.dataset.col >= 7
-        )
-          return;
-        if (
-          that._otherData.currentPlacement === 'destroyer' &&
-          cell.dataset.col >= 8
-        )
-          return;
-        if (
-          that._otherData.currentPlacement === 'patrol' &&
-          cell.dataset.col >= 9
-        )
-          return;
+      let size;
+
+      if (that._otherData.userState.currentPlacement === 'carrier') size = 5;
+      if (that._otherData.userState.currentPlacement === 'battleship') size = 4;
+      if (that._otherData.userState.currentPlacement === 'destroyer') size = 3;
+      if (that._otherData.userState.currentPlacement === 'patrol') size = 2;
+
+      const x = cell.dataset.row;
+      const y = cell.dataset.col;
+      if (that._otherData.userState.axis === 'X') {
+        if (size === 5 && cell.dataset.col >= 6) return;
+        if (size === 4 && cell.dataset.col >= 7) return;
+        if (size === 3 && cell.dataset.col >= 8) return;
+        if (size === 2 && cell.dataset.col >= 9) return;
+        for (let i = 0; i < size; i++) {
+          const yNum = Number(y) + i;
+          const check = x + String(yNum);
+          console.log(check);
+
+          if (that._otherData.boardState.playerBoardSlots.includes(check)) {
+            console.log('REPEAT');
+            return;
+          }
+        }
       }
-      if (that._otherData.axis === 'Y') {
-        if (
-          that._otherData.currentPlacement === 'carrier' &&
-          cell.dataset.row >= 6
-        )
-          return;
-        if (
-          that._otherData.currentPlacement === 'battleship' &&
-          cell.dataset.row >= 7
-        )
-          return;
-        if (
-          that._otherData.currentPlacement === 'destroyer' &&
-          cell.dataset.row >= 8
-        )
-          return;
-        if (
-          that._otherData.currentPlacement === 'patrol' &&
-          cell.dataset.row >= 9
-        )
-          return;
+      if (that._otherData.userState.axis === 'Y') {
+        if (size === 5 && cell.dataset.row >= 6) return;
+        if (size === 4 && cell.dataset.row >= 7) return;
+        if (size === 3 && cell.dataset.row >= 8) return;
+        if (size === 2 && cell.dataset.row >= 9) return;
+        for (let i = 0; i < size; i++) {
+          const xNum = Number(x) + i;
+          const check = String(xNum) + y;
+          console.log(check);
+
+          if (that._otherData.boardState.playerBoardSlots.includes(check)) {
+            console.log('REPEAT');
+            return;
+          }
+        }
       }
+
       console.log('CLICKED');
-      handler(cell.dataset.row, cell.dataset.col);
+      handler(x, y);
     };
 
     board.addEventListener('click', eventFunc);

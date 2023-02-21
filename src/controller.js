@@ -41,10 +41,7 @@ const init = function () {
   );
 
   pregameView.handlePlayGameButton(handleUserPregame);
-  gameBoardView.handleUserShipPlacements(
-    handleUserShipPlacements,
-    model.state.userState
-  );
+  gameBoardView.handleUserShipPlacements(handleUserShipPlacements, model.state);
 };
 
 init();
