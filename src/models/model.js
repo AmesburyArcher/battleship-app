@@ -54,3 +54,5 @@ export const placeUserShip = function (x, y, size) {
 
   state.boardState.playerShips.push(ship);
 };
+
+export const updateUserState = function () {};

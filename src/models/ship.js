@@ -98,9 +98,8 @@ export default class Ship {
             break;
           } else {
             map.set(coords, true);
-            const tempArr = coords.split('');
-            //tempArr[0] = x tempArr[1] = y
-            state.boardState.computerBoardSlots.push(tempArr);
+
+            state.boardState.computerBoardSlots.push(coords);
           }
         }
         if (unique) break;
@@ -114,8 +113,6 @@ export default class Ship {
           (direction === 0 ? locationY : locationY + i) +
             String(direction === 0 ? locationX + i : locationX)
         );
-        // const tempArr = coords.split('');
-        // console.log(coords);
 
         state.boardState.playerBoardSlots.push(coords);
       }

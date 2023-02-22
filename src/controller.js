@@ -19,6 +19,7 @@ const handleAttack = function (x, y) {
 
 const handleUserPregame = function () {
   pregameView.render();
+  gameBoardView.handleUserShipPlacements(handleUserShipPlacements, model.state);
 };
 
 const handleUserShipPlacements = function (x, y) {
@@ -29,8 +30,8 @@ const handleUserShipPlacements = function (x, y) {
   if (model.state.userState.currentPlacement === 'patrol') size = 2;
 
   model.placeUserShip(x, y, size);
-  console.log(model.state.boardState.playerShips);
-  console.log(model.state.boardState.playerBoardSlots);
+  // console.log(model.state.boardState.playerShips);
+  // console.log(model.state.boardState.playerBoardSlots);
 };
 
 const init = function () {
@@ -40,8 +41,7 @@ const init = function () {
     model.state.boardState.attackedCells
   );
 
-  pregameView.handlePlayGameButton(handleUserPregame);
-  gameBoardView.handleUserShipPlacements(handleUserShipPlacements, model.state);
+  pregameView.handlePlayGameButton(handleUserPregame, model.state.userState);
 };
 
 init();

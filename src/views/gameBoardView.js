@@ -73,6 +73,12 @@ class GameBoardView extends View {
             return;
           }
         }
+        for (let i = 0; i < size; i++) {
+          const cell = board.querySelector(
+            `[data-row="${x}"][data-col="${+y + i}"]`
+          );
+          cell.style.backgroundColor = 'pink';
+        }
       }
       if (that._otherData.userState.axis === 'Y') {
         if (size === 5 && cell.dataset.row >= 6) return;
@@ -89,9 +95,14 @@ class GameBoardView extends View {
             return;
           }
         }
+        for (let i = 0; i < size; i++) {
+          const cell = board.querySelector(
+            `[data-row="${+x + i}"][data-col="${y}"]`
+          );
+          cell.style.backgroundColor = 'pink';
+        }
       }
 
-      console.log('CLICKED');
       handler(x, y);
     };
 
