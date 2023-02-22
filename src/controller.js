@@ -30,6 +30,7 @@ const handleUserShipPlacements = function (x, y) {
   if (model.state.userState.currentPlacement === 'patrol') size = 2;
 
   model.placeUserShip(x, y, size);
+  model.updateUserState();
   // console.log(model.state.boardState.playerShips);
   // console.log(model.state.boardState.playerBoardSlots);
 };

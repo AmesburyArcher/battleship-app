@@ -53,6 +53,18 @@ export const placeUserShip = function (x, y, size) {
   const ship = new Ship(size, undefined, false, coords, direction);
 
   state.boardState.playerShips.push(ship);
+  gameBoard.popCells(ship, gameBoard.boardUser);
+  console.log(gameBoard.boardUser);
 };
 
-export const updateUserState = function () {};
+export const updateUserState = function () {
+  if (state.userState.shipsLeftToPlace.total === 0) return;
+  state.userState.shipsLeftToPlace.total--;
+
+  if (state.userState.shipsLeftToPlace.total === 9)
+    state.userState.currentPlacement = 'battleship';
+  if (state.userState.shipsLeftToPlace.total === 7)
+    state.userState.currentPlacement = 'destroyer';
+  if (state.userState.shipsLeftToPlace.total === 4)
+    state.userState.currentPlacement = 'patrol';
+};
