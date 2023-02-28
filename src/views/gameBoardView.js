@@ -37,17 +37,29 @@ class GameBoardView extends View {
     this._data.computerBoardSlots.forEach(coord => {
       const [x, y] = coord;
       const cell = board.querySelector(`[data-row="${x}"][data-col="${y}"]`);
-      cell.style.backgroundColor = 'pink';
+      cell.classList.add('occupied');
     });
   }
 
   handleUserShipPlacements(handler, data) {
     const board = this._parentElement.querySelector('[data-userType="user"]');
+    board
+      .querySelectorAll('.game__board__cell')
+      .forEach(cell => cell.classList.add('user__hover'));
     this._otherData = data;
     const that = this;
 
     const eventFunc = function (e) {
-      if (that._otherData.userState.shipsLeftToPlace.total <= 0) return;
+      if (that._otherData.userState.shipsLeftToPlace.total <= 0) {
+        board.removeEventListener('click', eventFunc);
+        return;
+      }
+
+      if (that._otherData.userState.shipsLeftToPlace.total === 1) {
+        board
+          .querySelectorAll('.game__board__cell')
+          .forEach(cell => cell.classList.remove('user__hover'));
+      }
       const cell = e.target;
       let size;
 
@@ -77,7 +89,7 @@ class GameBoardView extends View {
           const cell = board.querySelector(
             `[data-row="${x}"][data-col="${+y + i}"]`
           );
-          cell.style.backgroundColor = 'pink';
+          cell.classList.add('occupied');
         }
       }
       if (that._otherData.userState.axis === 'Y') {
@@ -99,7 +111,7 @@ class GameBoardView extends View {
           const cell = board.querySelector(
             `[data-row="${+x + i}"][data-col="${y}"]`
           );
-          cell.style.backgroundColor = 'pink';
+          cell.classList.add('occupied');
         }
       }
 
@@ -110,13 +122,22 @@ class GameBoardView extends View {
   }
 
   handleAttacks(handler, data) {
-    this._parentElement.addEventListener('click', function (e) {
+    const board = this._parentElement.querySelector(
+      '[data-userType="computer"]'
+    );
+
+    board
+      .querySelectorAll('.game__board__cell')
+      .forEach(cell => cell.classList.add('user__aim'));
+
+    board.addEventListener('click', function (e) {
       if (!e.target.closest('.game__board__cell')) return;
-      if (e.target.parentNode.parentNode.dataset.usertype === 'user') return;
+      if (data.currentTurn != 'player') return;
+
       const xCoords = e.target.dataset.row;
       const yCoords = e.target.dataset.col;
 
-      if (data.includes(xCoords + yCoords)) {
+      if (data.attackedCells.includes(xCoords + yCoords)) {
         console.log('ALREADY HIT');
         return;
       }
@@ -124,10 +145,10 @@ class GameBoardView extends View {
       const status = handler(xCoords, yCoords);
 
       if (!status) {
-        e.target.style.backgroundColor = 'green';
+        e.target.classList.add('missed');
       }
       if (status) {
-        e.target.style.backgroundColor = 'red';
+        e.target.classList.add('hit');
       }
     });
   }

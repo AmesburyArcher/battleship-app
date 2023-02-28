@@ -12,7 +12,7 @@ const handleAttack = function (x, y) {
   // Fire shot at AI
   const shotFired = model.fireShot(x, y);
   // Check if all boats sunk
-  const gameOver = model.checkWin('computer');
+  const gameOver = model.checkWin(model.state.boardState.currentTurn);
   if (gameOver) console.log('WINNER!');
   return shotFired;
 };
@@ -31,16 +31,17 @@ const handleUserShipPlacements = function (x, y) {
 
   model.placeUserShip(x, y, size);
   model.updateUserState();
+  if (model.state.userState.shipsLeftToPlace.total === 0) {
+    pregameView.clear();
+    //Start game with attacks
+    gameBoardView.handleAttacks(handleAttack, model.state.boardState);
+  }
   // console.log(model.state.boardState.playerShips);
   // console.log(model.state.boardState.playerBoardSlots);
 };
 
 const init = function () {
   handleGameBoard();
-  gameBoardView.handleAttacks(
-    handleAttack,
-    model.state.boardState.attackedCells
-  );
 
   pregameView.handlePlayGameButton(handleUserPregame, model.state.userState);
 };

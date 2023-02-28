@@ -78,7 +78,31 @@ body {
 .game__board__cell {
   width: 50px;
   height: 50px;
-  border: 1px solid red;
+  border: 1px solid var(--color-purple-2);
+  background-color: var(--color-dark-3);
+}
+
+.game__board__cell.user__hover:hover:not(.game__board__cell.occupied) {
+  background-color: var(--color-dark-2);
+}
+
+.game__board__cell.user__aim:hover:not(
+    .game__board__cell.missed,
+    .game__board__cell.hit
+  ) {
+  background-color: var(--color-dark-2);
+}
+
+.game__board__cell.occupied {
+  background-color: var(--color-light-1);
+}
+
+.game__board__cell.missed {
+  background-color: red;
+}
+
+.game__board__cell.hit {
+  background-color: var(--color-black-1);
 }
 
 .footer {

@@ -8,6 +8,7 @@ export const state = {
     playerShips: [],
     playerBoardSlots: [],
     attackedCells: [],
+    currentTurn: 'player',
   },
   userState: {
     shipsLeftToPlace: {
