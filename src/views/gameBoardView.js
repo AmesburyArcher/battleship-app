@@ -43,9 +43,11 @@ class GameBoardView extends View {
 
   handleUserShipPlacements(handler, data) {
     const board = this._parentElement.querySelector('[data-userType="user"]');
-    board
-      .querySelectorAll('.game__board__cell')
-      .forEach(cell => cell.classList.add('user__hover'));
+    board.querySelectorAll('.game__board__cell').forEach(cell => {
+      cell.classList.add('user__hover');
+      cell.addEventListener('mouseenter', onHover);
+      cell.addEventListener('mouseleave', onHover);
+    });
     this._otherData = data;
     const that = this;
 
@@ -89,6 +91,7 @@ class GameBoardView extends View {
           const cell = board.querySelector(
             `[data-row="${x}"][data-col="${+y + i}"]`
           );
+          cell.classList.remove('valid__slot');
           cell.classList.add('occupied');
         }
       }
@@ -111,6 +114,7 @@ class GameBoardView extends View {
           const cell = board.querySelector(
             `[data-row="${+x + i}"][data-col="${y}"]`
           );
+          cell.classList.remove('valid__slot');
           cell.classList.add('occupied');
         }
       }
@@ -118,7 +122,52 @@ class GameBoardView extends View {
       handler(x, y);
     };
 
+    function onHover(e) {
+      const currentCell = e.target;
+      if (currentCell.classList.contains('occupied')) return;
+
+      let size;
+      if (that._otherData.userState.currentPlacement === 'carrier') size = 5;
+      if (that._otherData.userState.currentPlacement === 'battleship') size = 4;
+      if (that._otherData.userState.currentPlacement === 'destroyer') size = 3;
+      if (that._otherData.userState.currentPlacement === 'patrol') size = 2;
+
+      const cells = board.querySelectorAll('.game__board__cell');
+      if (that._otherData.userState.axis === 'X') {
+        if (Number(currentCell.dataset.col) + size > Y_AXIS_SIZE) {
+          currentCell.classList.toggle('invalid');
+          return;
+        }
+
+        cells.forEach(cell => {
+          if (
+            cell.dataset.row === currentCell.dataset.row &&
+            cell.dataset.col >= currentCell.dataset.col &&
+            cell.dataset.col <= Number(currentCell.dataset.col) + (size - 1)
+          ) {
+            cell.classList.toggle('valid__slot');
+          }
+        });
+      } else {
+        if (Number(currentCell.dataset.row) + size > X_AXIS_SIZE) {
+          currentCell.classList.toggle('invalid');
+          return;
+        }
+        console.log('reached');
+        cells.forEach(cell => {
+          if (
+            cell.dataset.col === currentCell.dataset.col &&
+            cell.dataset.row >= currentCell.dataset.row &&
+            cell.dataset.row <= Number(currentCell.dataset.row) + (size - 1)
+          ) {
+            cell.classList.toggle('valid__slot');
+          }
+        });
+      }
+    }
+
     board.addEventListener('click', eventFunc);
+    // board.addEventListener('mouseenter', onHover);
   }
 
   handleAttacks(handler, data) {

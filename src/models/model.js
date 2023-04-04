@@ -40,10 +40,10 @@ export const fireShot = function (x, y) {
 
 export const checkWin = function (userType) {
   if (userType === 'player') {
-    return state.boardState.playerShips.every(ship => ship.isSunk());
+    return state.boardState.computerShips.every(ship => ship.isSunk());
   }
   if (userType === 'computer') {
-    return state.boardState.computerShips.every(ship => ship.isSunk());
+    return state.boardState.playerShips.every(ship => ship.isSunk());
   }
 };
 

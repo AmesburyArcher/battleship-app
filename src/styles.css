@@ -105,6 +105,14 @@ body {
   background-color: var(--color-black-1);
 }
 
+.game__board__cell.valid__slot {
+  background-color: var(--color-dark-2);
+}
+
+.game__board__cell.invalid {
+  cursor: not-allowed;
+}
+
 .footer {
   display: flex;
   justify-content: center;
