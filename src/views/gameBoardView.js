@@ -46,7 +46,7 @@ class GameBoardView extends View {
     board.querySelectorAll('.game__board__cell').forEach(cell => {
       cell.classList.add('user__hover');
       cell.addEventListener('mouseenter', onHover);
-      cell.addEventListener('mouseleave', onHover);
+      cell.addEventListener('mouseleave', onExit);
     });
     this._otherData = data;
     const that = this;
@@ -58,9 +58,11 @@ class GameBoardView extends View {
       }
 
       if (that._otherData.userState.shipsLeftToPlace.total === 1) {
-        board
-          .querySelectorAll('.game__board__cell')
-          .forEach(cell => cell.classList.remove('user__hover'));
+        board.querySelectorAll('.game__board__cell').forEach(cell => {
+          cell.classList.remove('user__hover');
+          cell.removeEventListener('mouseenter', onHover);
+          cell.removeEventListener('mouseenter', onExit);
+        });
       }
       const cell = e.target;
       let size;
@@ -135,7 +137,79 @@ class GameBoardView extends View {
       const cells = board.querySelectorAll('.game__board__cell');
       if (that._otherData.userState.axis === 'X') {
         if (Number(currentCell.dataset.col) + size > Y_AXIS_SIZE) {
-          currentCell.classList.toggle('invalid');
+          currentCell.classList.add('invalid');
+          return;
+        }
+        let flag = true;
+        cells.forEach(cell => {
+          if (
+            cell.dataset.row === currentCell.dataset.row &&
+            cell.dataset.col >= currentCell.dataset.col &&
+            cell.dataset.col <= Number(currentCell.dataset.col) + (size - 1)
+          ) {
+            if (cell.classList.contains('occupied')) {
+              console.log('triggered');
+              currentCell.classList.add('invalid');
+              flag = false;
+            }
+          }
+        });
+        if (flag) {
+          cells.forEach(cell => {
+            if (
+              cell.dataset.row === currentCell.dataset.row &&
+              cell.dataset.col >= currentCell.dataset.col &&
+              cell.dataset.col <= Number(currentCell.dataset.col) + (size - 1)
+            ) {
+              cell.classList.add('valid__slot');
+            }
+          });
+        }
+      } else {
+        if (Number(currentCell.dataset.row) + size > X_AXIS_SIZE) {
+          currentCell.classList.add('invalid');
+          return;
+        }
+        let flag = true;
+        cells.forEach(cell => {
+          if (
+            cell.dataset.col === currentCell.dataset.col &&
+            cell.dataset.row >= currentCell.dataset.row &&
+            cell.dataset.row <= Number(currentCell.dataset.row) + (size - 1)
+          ) {
+            if (cell.classList.contains('occupied')) {
+              currentCell.classList.add('invalid');
+              flag = false;
+            }
+          }
+        });
+        if (flag) {
+          cells.forEach(cell => {
+            if (
+              cell.dataset.col === currentCell.dataset.col &&
+              cell.dataset.row >= currentCell.dataset.row &&
+              cell.dataset.row <= Number(currentCell.dataset.row) + (size - 1)
+            ) {
+              cell.classList.add('valid__slot');
+            }
+          });
+        }
+      }
+    }
+    function onExit(e) {
+      const currentCell = e.target;
+      if (currentCell.classList.contains('occupied')) return;
+
+      let size;
+      if (that._otherData.userState.currentPlacement === 'carrier') size = 5;
+      if (that._otherData.userState.currentPlacement === 'battleship') size = 4;
+      if (that._otherData.userState.currentPlacement === 'destroyer') size = 3;
+      if (that._otherData.userState.currentPlacement === 'patrol') size = 2;
+
+      const cells = board.querySelectorAll('.game__board__cell');
+      if (that._otherData.userState.axis === 'X') {
+        if (Number(currentCell.dataset.col) + size > Y_AXIS_SIZE) {
+          currentCell.classList.remove('invalid');
           return;
         }
 
@@ -145,29 +219,29 @@ class GameBoardView extends View {
             cell.dataset.col >= currentCell.dataset.col &&
             cell.dataset.col <= Number(currentCell.dataset.col) + (size - 1)
           ) {
-            cell.classList.toggle('valid__slot');
+            cell.classList.remove('valid__slot');
           }
         });
       } else {
         if (Number(currentCell.dataset.row) + size > X_AXIS_SIZE) {
-          currentCell.classList.toggle('invalid');
+          currentCell.classList.remove('invalid');
           return;
         }
-        console.log('reached');
+
         cells.forEach(cell => {
           if (
             cell.dataset.col === currentCell.dataset.col &&
             cell.dataset.row >= currentCell.dataset.row &&
             cell.dataset.row <= Number(currentCell.dataset.row) + (size - 1)
           ) {
-            cell.classList.toggle('valid__slot');
+            cell.classList.remove('valid__slot');
           }
         });
       }
+      currentCell.classList.remove('invalid');
     }
 
     board.addEventListener('click', eventFunc);
-    // board.addEventListener('mouseenter', onHover);
   }
 
   handleAttacks(handler, data) {
