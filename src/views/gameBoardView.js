@@ -123,7 +123,7 @@ class GameBoardView extends View {
 
       handler(x, y);
     };
-
+    //Deal with cursor entering cell
     function onHover(e) {
       const currentCell = e.target;
       if (currentCell.classList.contains('occupied')) return;
@@ -196,6 +196,7 @@ class GameBoardView extends View {
         }
       }
     }
+    // Deal with cursor leaving cell
     function onExit(e) {
       const currentCell = e.target;
       if (currentCell.classList.contains('occupied')) return;

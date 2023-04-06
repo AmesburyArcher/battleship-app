@@ -42,15 +42,33 @@ body {
   font-size: 64;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
 .pre__game__container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+}
+
+.pre__game__button {
+  padding: 0.5rem;
+  background-color: var(--color-white-1);
+  border-style: none;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
 .pre__game__button__axis {
   padding: 0.2rem;
+  width: 2rem;
   background-color: var(--color-purple-2);
   border-style: none;
   border-radius: 6px;
