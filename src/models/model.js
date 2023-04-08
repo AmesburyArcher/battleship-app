@@ -1,5 +1,6 @@
 import gameBoard from './gameBoard';
 import Ship from './ship';
+import Stack, { randomInt } from '../helpers';
 
 export const state = {
   boardState: {
@@ -8,6 +9,7 @@ export const state = {
     playerShips: [],
     playerBoardSlots: [],
     attackedCells: [],
+    computerAttackedCells: [],
     currentTurn: 'player',
   },
   userState: {
@@ -20,6 +22,10 @@ export const state = {
     },
     axis: 'X',
     currentPlacement: 'carrier',
+  },
+
+  computerState: {
+    randomAttack: true,
   },
 };
 
@@ -36,6 +42,51 @@ export const fireShot = function (x, y) {
     console.log('HIT!');
     return sunk;
   }
+};
+
+export const computerAttack = function () {
+  let xVal;
+  let yVal;
+
+  if (state.computerState.randomAttack) {
+    let flag = true;
+    while (flag) {
+      xVal = randomInt(9);
+      yVal = randomInt(9);
+      if (
+        !state.boardState.computerAttackedCells.includes(
+          String(xVal) + String(yVal)
+        )
+      )
+        flag = false;
+    }
+  } else {
+    const coords = state.computerState.possibleAttacks.pop();
+    xVal = coords[0];
+    yVal = coords[1];
+    if (state.computerState.possibleAttacks.isEmpty())
+      state.computerState.randomAttack = true;
+  }
+  const target = gameBoard.boardUser[xVal][yVal];
+  state.boardState.computerAttackedCells.push(String(xVal) + String(yVal));
+
+  if (target.occupied) {
+    target.occupied.hit();
+    state.computerState.randomAttack = false;
+    console.log('HIT', xVal, yVal);
+    if (xVal - 1 >= 0)
+      state.computerState.possibleAttacks.push([xVal - 1, yVal]);
+    if (xVal + 1 <= 9)
+      state.computerState.possibleAttacks.push([xVal + 1, yVal]);
+    if (yVal - 1 >= 0)
+      state.computerState.possibleAttacks.push([xVal, yVal - 1]);
+    if (yVal + 1 <= 9)
+      state.computerState.possibleAttacks.push([xVal, yVal + 1]);
+  } else {
+    console.log('MISS!', xVal, yVal);
+  }
+
+  return [xVal, yVal];
 };
 
 export const checkWin = function (userType) {
@@ -55,7 +106,7 @@ export const placeUserShip = function (x, y, size) {
 
   state.boardState.playerShips.push(ship);
   gameBoard.popCells(ship, gameBoard.boardUser);
-  console.log(gameBoard.boardUser);
+  // console.log(gameBoard.boardUser);
 };
 
 export const updateUserState = function () {

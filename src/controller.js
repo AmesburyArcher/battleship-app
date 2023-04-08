@@ -2,6 +2,7 @@ import gameBoard from './models/gameBoard';
 import * as model from './models/model';
 import gameBoardView from './views/gameBoardView';
 import pregameView from './views/pregameView';
+import { Stack } from './helpers';
 
 const handleGameBoard = function () {
   gameBoardView.render(model.state.boardState);
@@ -35,6 +36,11 @@ const handleUserShipPlacements = function (x, y) {
     pregameView.clear();
     //Start game with attacks
     gameBoardView.handleAttacks(handleAttack, model.state.boardState);
+    model.computerAttack();
+    model.computerAttack();
+    model.computerAttack();
+    model.computerAttack();
+    console.log(model.state.computerState.possibleAttacks);
   }
   // console.log(model.state.boardState.playerShips);
   // console.log(model.state.boardState.playerBoardSlots);
@@ -44,6 +50,7 @@ const init = function () {
   handleGameBoard();
 
   pregameView.handlePlayGameButton(handleUserPregame, model.state.userState);
+  model.state.computerState.possibleAttacks = new Stack();
 };
 
 init();
