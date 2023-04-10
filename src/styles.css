@@ -77,6 +77,14 @@ body {
   font-size: 24px;
 }
 
+.game__messages {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  size: 72px;
+}
+
 .game__board__container {
   display: flex;
   gap: 2rem;

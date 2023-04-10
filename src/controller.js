@@ -2,6 +2,7 @@ import gameBoard from './models/gameBoard';
 import * as model from './models/model';
 import gameBoardView from './views/gameBoardView';
 import pregameView from './views/pregameView';
+import gameMessagesView from './views/gameMessagesView';
 import { Stack } from './helpers';
 
 const handleGameBoard = function () {
@@ -14,7 +15,38 @@ const handleAttack = function (x, y) {
   const shotFired = model.fireShot(x, y);
   // Check if all boats sunk
   const gameOver = model.checkWin(model.state.boardState.currentTurn);
-  if (gameOver) console.log('WINNER!');
+  if (gameOver) {
+    gameMessagesView.render(true, model.state.boardState.currentTurn, 'hit');
+    model.state.boardState.gameOver = true;
+    return shotFired;
+  } else {
+    gameMessagesView.render(
+      false,
+      model.state.boardState.currentTurn,
+      shotFired === 0 ? 'missed' : 'hit'
+    );
+  }
+  model.state.boardState.currentTurn = 'computer';
+  const timeout = setTimeout(function () {
+    const hit = gameBoardView.handleComputerAttack(
+      model.computerAttack,
+      model.state.boardState
+    );
+    const gameOverPC = model.checkWin(model.state.boardState.currentTurn);
+    console.log(gameOverPC, hit);
+    if (gameOverPC) {
+      gameMessagesView.render(true, model.state.boardState.currentTurn, 'hit');
+      model.state.boardState.gameOver = true;
+    } else {
+      gameMessagesView.render(
+        false,
+        model.state.boardState.currentTurn,
+        hit === false ? 'missed' : 'hit'
+      );
+    }
+    model.state.boardState.currentTurn = 'player';
+  }, 500);
+
   return shotFired;
 };
 
@@ -36,15 +68,12 @@ const handleUserShipPlacements = function (x, y) {
     pregameView.clear();
     //Start game with attacks
     gameBoardView.handleAttacks(handleAttack, model.state.boardState);
-    model.computerAttack();
-    model.computerAttack();
-    model.computerAttack();
-    model.computerAttack();
-    console.log(model.state.computerState.possibleAttacks);
   }
   // console.log(model.state.boardState.playerShips);
   // console.log(model.state.boardState.playerBoardSlots);
 };
+
+const handlePlayGame = function () {};
 
 const init = function () {
   handleGameBoard();

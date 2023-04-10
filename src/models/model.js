@@ -1,6 +1,6 @@
 import gameBoard from './gameBoard';
 import Ship from './ship';
-import Stack, { randomInt } from '../helpers';
+import { randomInt } from '../helpers';
 
 export const state = {
   boardState: {
@@ -11,6 +11,7 @@ export const state = {
     attackedCells: [],
     computerAttackedCells: [],
     currentTurn: 'player',
+    gameOver: false,
   },
   userState: {
     shipsLeftToPlace: {
@@ -30,6 +31,8 @@ export const state = {
 };
 
 export const fireShot = function (x, y) {
+  if (state.boardState.currentTurn === 'computer' || state.boardState.gameOver)
+    return;
   const target = gameBoard.boardComputer[x][y].occupied;
   state.boardState.attackedCells.push(String(x) + String(y));
 
@@ -75,18 +78,58 @@ export const computerAttack = function () {
     state.computerState.randomAttack = false;
     console.log('HIT', xVal, yVal);
     if (xVal - 1 >= 0)
-      state.computerState.possibleAttacks.push([xVal - 1, yVal]);
+      if (
+        !state.boardState.computerAttackedCells.includes(
+          String(+xVal - 1) + String(yVal)
+        )
+      ) {
+        state.computerState.possibleAttacks.push([xVal - 1, yVal]);
+        state.boardState.computerAttackedCells.push(
+          String(+xVal - 1) + String(yVal)
+        );
+      }
     if (xVal + 1 <= 9)
-      state.computerState.possibleAttacks.push([xVal + 1, yVal]);
+      if (
+        !state.boardState.computerAttackedCells.includes(
+          String(+xVal + 1) + String(yVal)
+        )
+      ) {
+        state.computerState.possibleAttacks.push([xVal + 1, yVal]);
+        state.boardState.computerAttackedCells.push(
+          String(+xVal + 1) + String(yVal)
+        );
+      }
     if (yVal - 1 >= 0)
-      state.computerState.possibleAttacks.push([xVal, yVal - 1]);
+      if (
+        !state.boardState.computerAttackedCells.includes(
+          String(xVal) + String(+yVal - 1)
+        )
+      ) {
+        state.computerState.possibleAttacks.push([xVal, yVal - 1]);
+        state.boardState.computerAttackedCells.push(
+          String(xVal) + String(+yVal - 1)
+        );
+      }
     if (yVal + 1 <= 9)
-      state.computerState.possibleAttacks.push([xVal, yVal + 1]);
+      if (
+        !state.boardState.computerAttackedCells.includes(
+          String(xVal) + String(+yVal + 1)
+        )
+      ) {
+        state.computerState.possibleAttacks.push([xVal, yVal + 1]);
+        state.boardState.computerAttackedCells.push(
+          String(xVal) + String(+yVal + 1)
+        );
+      }
   } else {
     console.log('MISS!', xVal, yVal);
   }
 
-  return [xVal, yVal];
+  return {
+    gameBoard: gameBoard.boardUser,
+    xVal,
+    yVal,
+  };
 };
 
 export const checkWin = function (userType) {

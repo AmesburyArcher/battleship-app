@@ -82,7 +82,6 @@ class GameBoardView extends View {
         for (let i = 0; i < size; i++) {
           const yNum = Number(y) + i;
           const check = x + String(yNum);
-          console.log(check);
 
           if (that._otherData.boardState.playerBoardSlots.includes(check)) {
             console.log('REPEAT');
@@ -105,7 +104,6 @@ class GameBoardView extends View {
         for (let i = 0; i < size; i++) {
           const xNum = Number(x) + i;
           const check = String(xNum) + y;
-          console.log(check);
 
           if (that._otherData.boardState.playerBoardSlots.includes(check)) {
             console.log('REPEAT');
@@ -256,7 +254,7 @@ class GameBoardView extends View {
 
     board.addEventListener('click', function (e) {
       if (!e.target.closest('.game__board__cell')) return;
-      if (data.currentTurn != 'player') return;
+      if (data.currentTurn != 'player' || data.gameOver === true) return;
 
       const xCoords = e.target.dataset.row;
       const yCoords = e.target.dataset.col;
@@ -276,6 +274,32 @@ class GameBoardView extends View {
       }
     });
   }
+
+  handleComputerAttack(handler, data) {
+    const board = this._parentElement.querySelector('[data-userType="user"]');
+
+    const info = handler();
+
+    const xCoords = info.xVal;
+    const yCoords = info.yVal;
+
+    const target = info.gameBoard[xCoords][yCoords];
+
+    const cell = board.querySelector(
+      `[data-row="${xCoords}"][data-col="${yCoords}"]`
+    );
+    console.log(cell);
+    console.log(target);
+
+    if (target.occupied) {
+      cell.classList.add('hit');
+    } else {
+      cell.classList.add('missed');
+    }
+    return target.occupied;
+  }
+
+  removeListeners() {}
 }
 
 export default new GameBoardView();
