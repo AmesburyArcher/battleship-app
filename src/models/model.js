@@ -37,14 +37,17 @@ export const fireShot = function (x, y) {
   state.boardState.attackedCells.push(String(x) + String(y));
 
   if (!target) {
-    console.log('MISS');
     return 0;
   }
   if (target) {
     const sunk = target.hit();
-    console.log('HIT!');
     return sunk;
   }
+};
+
+export const changeTurn = function () {
+  state.boardState.currentTurn =
+    state.boardState.currentTurn === 'player' ? 'computer' : 'player';
 };
 
 export const computerAttack = function () {
@@ -76,7 +79,6 @@ export const computerAttack = function () {
   if (target.occupied) {
     target.occupied.hit();
     state.computerState.randomAttack = false;
-    console.log('HIT', xVal, yVal);
     if (xVal - 1 >= 0)
       if (
         !state.boardState.computerAttackedCells.includes(
@@ -121,8 +123,6 @@ export const computerAttack = function () {
           String(xVal) + String(+yVal + 1)
         );
       }
-  } else {
-    console.log('MISS!', xVal, yVal);
   }
 
   return {
@@ -149,7 +149,6 @@ export const placeUserShip = function (x, y, size) {
 
   state.boardState.playerShips.push(ship);
   gameBoard.popCells(ship, gameBoard.boardUser);
-  // console.log(gameBoard.boardUser);
 };
 
 export const updateUserState = function () {

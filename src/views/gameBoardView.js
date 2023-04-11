@@ -288,8 +288,6 @@ class GameBoardView extends View {
     const cell = board.querySelector(
       `[data-row="${xCoords}"][data-col="${yCoords}"]`
     );
-    console.log(cell);
-    console.log(target);
 
     if (target.occupied) {
       cell.classList.add('hit');
@@ -298,8 +296,6 @@ class GameBoardView extends View {
     }
     return target.occupied;
   }
-
-  removeListeners() {}
 }
 
 export default new GameBoardView();

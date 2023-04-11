@@ -26,14 +26,18 @@ const handleAttack = function (x, y) {
       shotFired === 0 ? 'missed' : 'hit'
     );
   }
-  model.state.boardState.currentTurn = 'computer';
+  //switch turns to computer
+  model.changeTurn();
+
+  // use timeout to mimic thinking over turn
   const timeout = setTimeout(function () {
     const hit = gameBoardView.handleComputerAttack(
       model.computerAttack,
       model.state.boardState
     );
+    // check if PC has won
     const gameOverPC = model.checkWin(model.state.boardState.currentTurn);
-    console.log(gameOverPC, hit);
+
     if (gameOverPC) {
       gameMessagesView.render(true, model.state.boardState.currentTurn, 'hit');
       model.state.boardState.gameOver = true;
@@ -41,10 +45,10 @@ const handleAttack = function (x, y) {
       gameMessagesView.render(
         false,
         model.state.boardState.currentTurn,
-        hit === false ? 'missed' : 'hit'
+        hit === null ? 'missed' : 'hit'
       );
     }
-    model.state.boardState.currentTurn = 'player';
+    model.changeTurn();
   }, 500);
 
   return shotFired;
@@ -69,11 +73,7 @@ const handleUserShipPlacements = function (x, y) {
     //Start game with attacks
     gameBoardView.handleAttacks(handleAttack, model.state.boardState);
   }
-  // console.log(model.state.boardState.playerShips);
-  // console.log(model.state.boardState.playerBoardSlots);
 };
-
-const handlePlayGame = function () {};
 
 const init = function () {
   handleGameBoard();
