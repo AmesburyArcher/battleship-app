@@ -20,3 +20,6 @@ THINGS I WOULD DO DIFFERENTLY:
 
 - Since this project was worked on over the course of some time due to being in school, there were large gaps in time between working on it meaning I would forget some of the previous things I implemented. I would create more documentation in the future to avoid this
 - On the random computer ship placements, my current algorithm for finding the slots is nondeterministic as it relies on a loop running until all ships have been placed. This doesn't pose a problem for this project as there are enough empty slots to ensure there is spacing for each ship, but if the grid were smaller or more ships were added, the randomess of choosing slots could pose a problem and may result in an infinite loop. I would address this by creating an algorithm that predetermines the possible grid locations, and then chooses at random from these positions to avoid having to use a while() loop.
+
+LINK TO SITE:
+https://battleship-max.netlify.app/
