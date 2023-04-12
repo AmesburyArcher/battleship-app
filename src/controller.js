@@ -72,6 +72,8 @@ const handleUserShipPlacements = function (x, y) {
     pregameView.clear();
     //Start game with attacks
     gameBoardView.handleAttacks(handleAttack, model.state.boardState);
+    //Display start attacking message
+    gameMessagesView.render(null, null, null);
   }
 };
 

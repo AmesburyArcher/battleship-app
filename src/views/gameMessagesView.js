@@ -5,7 +5,6 @@ class GameMessageView {
     this.clear();
 
     const markup = this._generateMarkup(win, user, hit);
-    console.log('reached');
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -14,12 +13,19 @@ class GameMessageView {
   }
 
   _generateMarkup(win, user, hit) {
+    if (win === null && user === null && hit === null) {
+      return `
+        <div class="status__message">
+          Fire your first shot!
+        </div>
+      `;
+    }
     if (win) {
       return `
             <div class="status__message">
                 ${user} has won the game!
             </div>
-            <button onClick="window.location.reload();">Reset Game</button>
+            <button class="reset__button" onClick="window.location.reload();">Reset Game</button>
         `;
     } else {
       return `

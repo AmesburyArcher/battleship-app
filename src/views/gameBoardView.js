@@ -37,7 +37,7 @@ class GameBoardView extends View {
     this._data.computerBoardSlots.forEach(coord => {
       const [x, y] = coord;
       const cell = board.querySelector(`[data-row="${x}"][data-col="${y}"]`);
-      cell.classList.add('occupied');
+      // cell.classList.add('occupied');
     });
   }
 
@@ -84,7 +84,6 @@ class GameBoardView extends View {
           const check = x + String(yNum);
 
           if (that._otherData.boardState.playerBoardSlots.includes(check)) {
-            console.log('REPEAT');
             return;
           }
         }
@@ -106,7 +105,6 @@ class GameBoardView extends View {
           const check = String(xNum) + y;
 
           if (that._otherData.boardState.playerBoardSlots.includes(check)) {
-            console.log('REPEAT');
             return;
           }
         }
@@ -146,7 +144,6 @@ class GameBoardView extends View {
             cell.dataset.col <= Number(currentCell.dataset.col) + (size - 1)
           ) {
             if (cell.classList.contains('occupied')) {
-              console.log('triggered');
               currentCell.classList.add('invalid');
               flag = false;
             }
